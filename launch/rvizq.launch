@@ -1,0 +1,48 @@
+<launch>
+  <!-- ========== 机器人模型参数 ========== -->
+  <arg name="robot_description_file" 
+       default="$(find ur5e_description)/urdf/inc/load_ur5e.launch.xml"
+       doc="URDF生成启动文件路径"/>
+  <arg name="joint_limit_params" default="$(find ur5e_description)/config/ur5e/joint_limits.yaml"/>
+  <arg name="kinematics_params" default="$(find ur5e_description)/config/ur5e/default_kinematics.yaml"/>
+  <arg name="physical_params" default="$(find ur5e_description)/config/ur5e/physical_parameters.yaml"/>
+  <arg name="visual_params" default="$(find ur5e_description)/config/ur5e/visual_parameters.yaml"/>
+  <arg name="transmission_hw_interface" default="hardware_interface/EffortJointInterface" doc="为仿真机器人的每个关节暴露的硬件接口类型(可选: [hardware_interface/PositionJointInterface, hardware_interface/VelocityJointInterface, hardware_interface/EffortJointInterface])"/>
+
+  <!-- 控制器配置 -->
+  <arg name="controller_config_file" default="$(find ur5e_description)/config/ur5e_controllers.yaml" doc="用于定义ROS-Control控制器的配置文件"/>
+  <arg name="controllers" default="joint_state_controller eff_joint_traj_controller" doc="默认激活的控制器"/>
+  <arg name="stopped_controllers" default="joint_group_eff_controller" doc="初始加载但不启动的控制器"/>
+
+  <!-- robot_state_publisher配置 -->
+  <arg name="tf_prefix" default="" doc="机器人使用的tf前缀"/>
+  <arg name="tf_pub_rate" default="500" doc="robot_state_publisher发布变换的频率"/>
+
+  <!-- Gazebo参数 -->
+  <arg name="paused" default="false" doc="以暂停模式启动Gazebo"/>
+  <arg name="gui" default="true" doc="启动Gazebo图形界面"/>
+
+  <!-- 在参数服务器上加载urdf -->
+  <include file="$(arg robot_description_file)">
+    <arg name="joint_limit_params" value="$(arg joint_limit_params)"/>
+    <arg name="kinematics_params" value="$(arg kinematics_params)"/>
+    <arg name="physical_params" value="$(arg physical_params)"/>
+    <arg name="visual_params" value="$(arg visual_params)"/>
+    <arg name="transmission_hw_interface" value="$(arg transmission_hw_interface)"/>
+  </include>
+
+  <!-- 机器人状态发布器 -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="$(arg tf_pub_rate)" />
+    <param name="tf_prefix" value="$(arg tf_prefix)" />
+  </node>
+
+  <!-- 启动"驱动程序"(即: 这里是Gazebo) -->
+  <include file="$(find ur5e_description)/urdf/inc/ur_control.launch.xml">
+    <arg name="controller_config_file" value="$(arg controller_config_file)"/>
+    <arg name="controllers" value="$(arg controllers)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="stopped_controllers" value="$(arg stopped_controllers)"/>
+  </include>
+</launch>

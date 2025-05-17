@@ -1,17 +1,18 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
   <!--
-    NOTE: the macros defined in this file are NOT part of the public API of this
-          package. Users CANNOT rely on this file being available, or stored in
-          this location. Nor can they rely on the existence of the two macros.
+    注意：此文件中定义的宏不是该软件包公共API的一部分。
+          用户不能依赖此文件的可用性、存储位置，也不能依赖这些宏的存在。
 
-    Author: Ludovic Delval
-    Contributor: Felix Messmer
+    作者: Ludovic Delval
+    贡献者: Felix Messmer
   -->
+   <!-- 计算圆柱体的惯性矩阵参数 -->
   <xacro:macro name="cylinder_inertial" params="radius length mass *origin">
     <inertial>
       <mass value="${mass}" />
       <xacro:insert_block name="origin" />
+       <!-- 根据圆柱体的质量、半径和长度计算惯性矩阵 -->
       <inertia ixx="${0.0833333 * mass * (3 * radius * radius + length * length)}" ixy="0.0" ixz="0.0"
         iyy="${0.0833333 * mass * (3 * radius * radius + length * length)}" iyz="0.0"
         izz="${0.5 * mass * radius * radius}" />
@@ -20,15 +21,14 @@
 
 
   <!--
-    NOTE: this macro stores the defined properties in the scope of the caller.
-          However, users MUST NOT rely on these properties, their contents or
-          their names.
-
-          This macro is NOT part of the public API of the ur_description pkg,
-          and as such should be considered to be for internal use only.
+    注意：此宏将定义的属性存储在调用者的作用域中。
+          但是，用户不能依赖这些属性、其内容或名称。
+          
+          此宏不是ur_description软件包公共API的一部分，
+          因此应仅视为内部使用。
   -->
   <xacro:macro name="read_model_data" params="joint_limits_parameters_file kinematics_parameters_file physical_parameters_file visual_parameters_file">
-    <!-- Read .yaml files from disk, load content into properties -->
+<!-- 从磁盘读取.yaml配置文件，将内容加载到属性中 -->
     <xacro:property name="config_joint_limit_parameters" value="${xacro.load_yaml(joint_limits_parameters_file)}"/>
     <xacro:property name="config_kinematics_parameters" value="${xacro.load_yaml(kinematics_parameters_file)}"/>
     <xacro:property name="config_physical_parameters" value="${xacro.load_yaml(physical_parameters_file)}"/>

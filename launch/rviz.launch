@@ -17,7 +17,7 @@
   <!-- 启动 joint_state_publisher，设置初始关节状态为直立状态 -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <rosparam>
-      joint_states:
+      joint_states:  # 修正YAML格式
         shoulder_pan_joint: 0.0
         shoulder_lift_joint: 0.0
         elbow_joint: 0.0
@@ -28,11 +28,29 @@
   </node>
 
   <!-- 注释掉原有的 Joint State Publisher GUI，避免手动操作干扰初始状态 -->
-  <!-- <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen"/> -->
-
-  <!-- 在 Gazebo 中生成 UR5e 机器人 -->
-  <node pkg="gazebo_ros" type="spawn_model" name="spawn_ur5e" args="-urdf -param robot_description -model ur5e" output="screen"/>
+  <!-- <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen"> 
+    <rosparam>
+      joint_states:  # 修正YAML格式
+        shoulder_pan_joint: 0.0
+        shoulder_lift_joint: -1.5
+        elbow_joint: 0.0
+        wrist_1_joint: 0.0
+        wrist_2_joint: 0.0
+        wrist_3_joint: 0.0
+    </rosparam>
+  </node> -->
+  <!-- 添加延时保证 Gazebo 完全启动 -->
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_ur5e" 
+        args="-urdf -param robot_description -model ur5e" 
+        output="screen"
+        launch-prefix="bash -c 'sleep 3; $0 $@' "/>
 
   <!-- 启动 RViz 并加载 ur5e.rviz 配置 -->
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find ur5e_description)/cfg/view_robot.rviz" output="screen"/>
+
+
+
+
+
+  
 </launch>

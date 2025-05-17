@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
   <!--
-    NOTE: the macro defined in this file is NOT part of the public API of this
-          package. Users CANNOT rely on this file being available, or stored in
-          this location. Nor can they rely on the existence of the macro.
+    注意：此文件中定义的宏不属于此包的公共API。
+          用户不能依赖此文件的可用性、存储位置，也不能依赖此宏的存在。
   -->
-
   <xacro:macro name="ur_arm_transmission" params="prefix hw_interface">
-
-    <transmission name="${prefix}shoulder_pan_trans">
+    <!-- 
+      定义UR机械臂肩关节水平旋转关节的传动装置
+      连接电机与关节，实现运动传递
+    -->
+    <transmission name="${prefix}shoulder_pan_trans"> 
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}shoulder_pan_joint">
         <hardwareInterface>${hw_interface}</hardwareInterface>
@@ -18,6 +19,7 @@
       </actuator>
     </transmission>
 
+    <!-- 定义UR机械臂肩关节垂直旋转关节的传动装置 -->
     <transmission name="${prefix}shoulder_lift_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}shoulder_lift_joint">
@@ -28,6 +30,7 @@
       </actuator>
     </transmission>
 
+    <!-- 定义UR机械臂肘关节的传动装置 -->
     <transmission name="${prefix}elbow_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}elbow_joint">
@@ -38,6 +41,7 @@
       </actuator>
     </transmission>
 
+    <!-- 定义UR机械臂腕关节1的传动装置 -->
     <transmission name="${prefix}wrist_1_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wrist_1_joint">
@@ -48,6 +52,7 @@
       </actuator>
     </transmission>
 
+    <!-- 定义UR机械臂腕关节2的传动装置 -->
     <transmission name="${prefix}wrist_2_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wrist_2_joint">
@@ -58,6 +63,7 @@
       </actuator>
     </transmission>
 
+    <!-- 定义UR机械臂腕关节3的传动装置 -->
     <transmission name="${prefix}wrist_3_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}wrist_3_joint">

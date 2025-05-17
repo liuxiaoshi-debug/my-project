@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 参数文件 -->
+  <arg name="joint_limit_params" default="$(find ur5e_description)/config/ur5e/joint_limits.yaml"/>
+  <arg name="kinematics_params" default="$(find ur5e_description)/config/ur5e/default_kinematics.yaml"/>
+  <arg name="physical_params" default="$(find ur5e_description)/config/ur5e/physical_parameters.yaml"/>
+  <arg name="visual_params" default="$(find ur5e_description)/config/ur5e/visual_parameters.yaml"/>
+
+  <!-- 通用参数 -->
+  <arg name="transmission_hw_interface" default="hardware_interface/EffortJointInterface" doc="为仿真机器人中每个关节暴露的硬件接口（可选：[位置关节接口, 速度关节接口, 力矩关节接口]）"/>
+  <arg name="safety_limits" default="false" doc="若为True，启用安全限位控制器"/>
+  <arg name="safety_pos_margin" default="0.15" doc="安全控制器中的位置裕度（上下限）" />
+  <arg name="safety_k_position" default="20" doc="用于设置安全控制器中的位置增益参数" />
+
+  <!-- 使用通用launch文件并传递所有参数 -->
+  <include file="$(dirname)/load_ur.launch.xml" pass_all_args="true">
+    <arg name="robot_model" value="ur5e" />
+  </include>
+</launch>

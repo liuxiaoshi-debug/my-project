@@ -1,55 +1,47 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
   <!--
-    Base UR robot series xacro macro.
+    UR 系列机器人基础 xacro 宏定义文件
 
-    NOTE: this is NOT a URDF. It cannot directly be loaded by consumers
-    expecting a flattened '.urdf' file. See the top-level '.xacro' for that
-    (but note: that .xacro must still be processed by the xacro command).
+    注意：本文件并非标准 URDF 文件，不能直接作为已处理的 '.urdf' 文件使用。
+    如需使用完整 URDF 文件，请参考顶层 '.xacro' 文件（仍需通过 xacro 命令处理）
 
-    For use in '.launch' files: use one of the 'load_urX.launch' convenience
-    launch files.
+    在 '.launch' 文件中的使用方法：通过 'load_urX.launch' 系列便捷启动文件调用
 
-    This file models the base kinematic chain of a UR robot, which then gets
-    parameterised by various configuration files to convert it into a UR3(e),
-    UR5(e), UR10(e), UR16e, UR20 or UR30.
+    本文件定义了 UR 机器人的基础运动学链结构，通过不同配置文件参数化后可生成：
+    UR3(e)、UR5(e)、UR10(e)、UR16e、UR20 或 UR30 等具体机型模型
 
-    NOTE: the default kinematic parameters (ie: link lengths, frame locations,
-    offets, etc) do not correspond to any particular robot. They are defaults
-    only. There WILL be non-zero offsets between the Forward Kinematics results
-    in TF (ie: robot_state_publisher) and the values reported by the Teach
-    Pendant.
+    重要说明：默认运动学参数（如连杆长度、坐标系位置、偏移量等）不与任何具体机型对应，
+    仅作为默认值存在。这将导致 TF 中的正向运动学计算结果（通过 robot_state_publisher）
+    与示教器显示值之间存在非零偏移量
 
-    For accurate (and robot-specific) transforms, the 'kinematics_parameters_file'
-    parameter MUST point to a .yaml file containing the appropriate values for
-    the targetted robot.
+    如需获得精确（且针对特定机器人）的坐标变换，必须通过 'kinematics_parameters_file' 
+    参数指向包含目标机器人正确参数的 .yaml 文件
 
-    If using the UniversalRobots/Universal_Robots_ROS_Driver, follow the steps
-    described in the readme of that repository to extract the kinematic
-    calibration from the controller and generate the required .yaml file.
+    若使用 UniversalRobots/Universal_Robots_ROS_Driver 驱动，请按照该仓库文档说明，
+    从控制器提取运动学校准数据并生成所需的 .yaml 配置文件
 
-    Main author of the migration to yaml configs: Ludovic Delval.
+    迁移至 yaml 配置文件的主要贡献者：Ludovic Delval
 
-    Contributors to previous versions (in no particular order):
-
-     - Felix Messmer
-     - Kelsey Hawkins
-     - Wim Meeussen
-     - Shaun Edwards
-     - Nadia Hammoudeh Garcia
-     - Dave Hershberger
-     - G. vd. Hoorn
-     - Philip Long
-     - Dave Coleman
-     - Miguel Prada
-     - Mathias Luedtke
-     - Marcel Schnirring
-     - Felix von Drigalski
-     - Felix Exner
-     - Jimmy Da Silva
+    历史版本贡献者（按字母顺序排列）：
      - Ajit Krisshna N L
+     - Dave Coleman
+     - Dave Hershberger
+     - Felix Exner
+     - Felix Messmer
+     - Felix von Drigalski
+     - G. vd. Hoorn
+     - Jimmy Da Silva
+     - Kelsey Hawkins
+     - Marcel Schnirring
+     - Mathias Luedtke
+     - Miguel Prada
      - Muhammad Asif Rana
-  -->
+     - Nadia Hammoudeh Garcia
+     - Philip Long
+     - Shaun Edwards
+     - Wim Meeussen
+-->
 
   <xacro:include filename="$(find ur5e_description)/urdf/inc/ur_transmissions.xacro" />
   <xacro:include filename="$(find ur5e_description)/urdf/inc/ur_common.xacro" />

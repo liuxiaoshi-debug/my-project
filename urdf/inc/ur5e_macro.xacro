@@ -1,24 +1,16 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
   <!--
-    Convenience wrapper for the 'ur_robot' macro which provides default values
-    for the various "parameters files" parameters for a UR5e.
-
-    This file can be used when composing a more complex scene with one or more
-    UR5e robots.
-
-    While the generic 'ur_robot' macro could also be used, it would require
-    the user to provide values for all parameters, as that macro does not set
-    any model-specific defaults (not even for the generic parameters, such as
-    the visual and physical parameters and joint limits).
-
-    Refer to the main 'ur_macro.xacro' in this package for information about
-    use, contributors and limitations.
-
-    NOTE: users will most likely want to override *at least* the
-          'kinematics_parameters_file' parameter. Otherwise, a default kinematic
-          model will be used, which will almost certainly not correspond to any
-          real robot.
+    对'ur_robot'宏的便捷封装，为UR5e机器人的各类"参数文件"参数提供默认值。
+    当组合包含一个或多个UR5e机器人的复杂场景时，可使用此文件。
+    
+    虽然也可以使用通用的'ur_robot'宏，但用户需要为所有参数提供值，
+    因为该宏未设置任何特定于模型的默认值（甚至不包括视觉、物理参数和关节限制等通用参数）。
+    
+    有关使用方法、贡献者和限制信息，请参考此包中的主'ur_macro.xacro'文件。
+    
+    注意：用户很可能至少需要覆盖'kinematics_parameters_file'参数。
+          否则将使用默认运动学模型，该模型几乎肯定与任何实际机器人都不匹配。
   -->
    
     <!-- 必须校准的参数 -->

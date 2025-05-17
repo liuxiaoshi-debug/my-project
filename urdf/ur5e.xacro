@@ -1,21 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro" name="ur5e_robot">
   <!--
-    This is a convenience top-level xacro which loads the macro for the UR5e
-    which defines the default values for the various "parameters files"
-    parameters for a UR5e.
+    这是一个便捷的顶层xacro文件，用于加载UR5e的宏定义，并为UR5e的各种"参数文件"参数设置默认值。
 
-    This file is only useful when loading a stand-alone, completely isolated
-    robot with only default values for all parameters such as the kinematics,
-    visual and physical parameters and joint limits.
+    该文件仅在加载独立、完全隔离的机器人（所有参数如运动学、视觉、物理参数和关节限位均使用默认值）时有用。
 
-    This file is not intended to be integrated into a larger scene or other
-    composite xacro.
+    此文件不建议集成到更大的场景或其他复合xacro中。
 
-    Instead, xacro:include 'inc/ur5e_macro.xacro' and override the defaults
-    for the arguments to that macro.
+    相反，建议通过xacro:include包含'inc/ur5e_macro.xacro'，并覆盖该宏的参数默认值。
 
-    Refer to 'inc/ur_macro.xacro' for more information.
+    更多信息请参考'inc/ur_macro.xacro'。
   -->
   <xacro:include filename="$(find ur5e_description)/urdf/inc/ur5e_macro.xacro"/>
   <xacro:ur5e_robot prefix="" />

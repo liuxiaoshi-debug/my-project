@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg robot_model)_robot">
+  <!--
+    这是一个顶层Xacro文件，用于实例化Gazebo专用版本的'ur_robot'宏（即'ur_robot_gazebo'），并为其传递所有必需参数的值。
+
+    该文件应被视为ur_description包中同名文件的Gazebo专用变体。它接受相同的参数，但不会为真实机器人配置，而是生成兼容Gazebo的URDF，并附加ros_control硬件接口。
+
+    仅当计划在Gazebo中单独生成机器人（不带夹具或其他几何结构）时，才使用此顶层Xacro。
+
+    如果需要附加末端执行器、摄像头或将机器人集成到更大的工作单元中，并希望将其作为单个实体生成到Gazebo中，**请勿编辑此文件**。
+
+    相反：创建新的顶层Xacro文件，赋予合适的名称，包含所需的'.xacro'文件，实例化模型（即调用宏），并通过添加适当的关节连接所有部分。
+  -->
+
+  <!--
+    导入主宏。
+
+    注意：此操作导入的是Gazebo包装的主宏，而非常规的xacro宏（由ur_description提供）。
+  -->
+  <xacro:include filename="$(find ur_gazebo)/urdf/ur_macro.xacro"/>
+
+  <!--声明参数-->
+  <xacro:arg name="joint_limit_params" default=""/>
+  <xacro:arg name="physical_params" default=""/>
+  <xacro:arg name="kinematics_params" default=""/>
+  <xacro:arg name="visual_params" default=""/>
+  <!--
+    合法值：
+      - hardware_interface/PositionJointInterface
+      - hardware_interface/VelocityJointInterface
+      - hardware_interface/EffortJointInterface
+
+    注意：此值必须与'config'目录中控制器.yaml文件中配置的控制器相对应。
+  -->
+  <xacro:arg name="transmission_hw_interface" default="hardware_interface/EffortJointInterface"/>
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+
+  <!-- 实例化Gazebo机器人并传递所有必需参数 -->
+  <xacro:ur_robot_gazebo
+    prefix=""
+    joint_limits_parameters_file="$(arg joint_limit_params)"
+    kinematics_parameters_file="$(arg kinematics_params)"
+    physical_parameters_file="$(arg physical_params)"
+    visual_parameters_file="$(arg visual_params)"
+    transmission_hw_interface="$(arg transmission_hw_interface)"
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"
+  />
+
+  <!--
+    将Gazebo模型附加到Gazebo的世界坐标系。
+
+    注意：如果需要将UR机器人集成到更大的场景中并添加末端执行器或其他部件，**请勿修改此文件**或此处的'world'连杆。请创建新的Xacro文件，并在其中决定是否需要添加'world'连杆。
+  -->
+  <link name="world"/>
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="tool0_controller"/>
+  <joint name="tool_controller_fake_joint" type="fixed">
+    <parent link="tool0"/>
+    <child link="tool0_controller"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+</robot>
